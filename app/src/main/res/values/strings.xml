@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Attendance App</string>
+    <string name="email">Email:</string>
+    <string name="pass">Password:</string>
+    <string name="confirm_pass">Confirm Password:</string>
+    <string name="fingerID">Finger Print ID:</string>
+    <string name="n_id">National ID:</string>
+    <string name="username">Username:</string>
+    <string name="loginBtn">Login</string>
+    <string name="SignUpBtn">Signup</string>
+    <string name="signUpTextView"><u>Create a new account</u></string>
+    <string name="loginTextView"> <u>Login to your account</u> </string>
+    <string name="attendance_list">View\n Attendance</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="type_id">Please type your National ID</string>
+    <string name="id_hint">National ID</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="logOut">Log Out</string>
+    <string name="exit">Exit</string>
+    <string name="viewAttendanceList">Attendance List</string>
+    <string name="continueLocation">Continue</string>
+    <string name="locationMessage">Please make sure that you are in the location</string>
+    <string name="openLocation">Open the location on Google Maps</string>
+    <string name="welocmeMessage">Welocme!</string>
+    <string name="tryAgain">Try Again!</string>
+    <string name="alreadyCheckedIn">Already Checked In!</string>
+    <string name="alreadyCheckedOut">Already Checked Out!</string>
+    <string name="not_auth">You are not authorized!</string>
+    <string name="verify">An Email verification is sent to your email, please verify your email and Login.</string>
+    <string name="failed">Failed.</string>
+    <string name="emailSent">Email Sent</string>
+    <string name="emailSendAgain">Send Again</string>
+    <string name="sendVerificationText"><u>Send Verification</u></string>
+    <string name="fingerPrintCheck"><u>Press to verify your fingerprint</u></string>
+
+
+</resources>

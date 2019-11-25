@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">برنامج التحضير</string>
+    <string name="email">الايميل</string>
+    <string name="pass">كلمة السر</string>
+    <string name="confirm_pass">تأكيد كلمة السر</string>
+    <string name="fingerID">رقم البصمة</string>
+    <string name="n_id">رقم الهوية</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="loginBtn">تسجيل الدخول</string>
+    <string name="SignUpBtn">التسجيل</string>
+    <string name="signUpTextView"><u>إنشاء حساب جديد</u></string>
+    <string name="loginTextView"><u>سجل الدخول الى حسابك</u></string>
+    <string name="attendance_list">عرض الحضور\nوالانصراف</string>
+    <string name="check_in">تسجيل حضور</string>
+    <string name="check_out">تسجيل انصراف</string>
+    <string name="type_id">يرجى كتابة رقم الهوية</string>
+    <string name="id_hint">رقم الهوية</string>
+    <string name="submit">إرسال</string>
+    <string name="cancel">إلغاء</string>
+    <string name="logOut">تسجيل الخروج من الحساب</string>
+    <string name="exit">الخروج من البرنامج</string>
+    <string name="viewAttendanceList">قائمة الحضور والإنصراف</string>
+    <string name="continueLocation">متابعة</string>
+    <string name="locationMessage">يرجى التأكد انك في المنطقة</string>
+    <string name="openLocation">فتح الموقع على خرائط قوقل</string>
+    <string name="welocmeMessage">مرحبا!</string>
+    <string name="tryAgain">حاول مرة أخرى!</string>
+    <string name="alreadyCheckedIn">تم التحضير سابقا!</string>
+    <string name="alreadyCheckedOut">تم التحضير سابقا!</string>
+    <string name="not_auth">ليس لديك صلاحية!</string>
+    <string name="verify">تم ارسال رسالة تفعيل الى ايميلك، يرجى تفعيل ايميلك ثم تسجيل الدخول.</string>
+    <string name="failed">فشل.</string>
+    <string name="emailSent">تم الارسال</string>
+    <string name="emailSendAgain">تم الارسال</string>
+    <string name="sendVerificationText"><u>ارسال رسالة تفعيل</u></string>
+    <string name="fingerPrintCheck"><u>اضغط لتأكيد بصمتك</u></string>
+
+
+</resources>

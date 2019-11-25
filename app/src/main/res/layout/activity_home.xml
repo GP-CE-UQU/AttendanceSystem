@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".HomeActivity"
+    tools:layout_editor_absoluteY="81dp">
+
+    <!--    <Button-->
+    <!--        android:id="@+id/button"-->
+    <!--        android:layout_width="389dp"-->
+    <!--        android:layout_height="187dp"-->
+    <!--        android:background="@drawable/attend_ripple_effect"-->
+    <!--        android:onClick="chooseAtten"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+
+    <Button
+        android:id="@+id/viewAttenButton"
+        android:layout_width="370dp"
+        android:layout_height="187dp"
+        android:background="@drawable/list_ripple_effect"
+        android:clickable="true"
+        android:enabled="true"
+        android:focusable="auto"
+        android:onClick="viewAttendance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/check_in_Button" />
+
+    <Button
+        android:id="@+id/check_in_Button"
+        android:layout_width="180dp"
+        android:layout_height="148dp"
+        android:layout_marginStart="91dp"
+        android:layout_marginLeft="91dp"
+        android:layout_marginTop="230dp"
+        android:background="@drawable/attend_ripple_effect"
+        android:enabled="true"
+        android:onClick="checkIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/check_out_Button"
+        android:layout_width="180dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="230dp"
+        android:background="@drawable/attend_out_ripple_effect"
+        android:enabled="true"
+        android:onClick="checkOut"
+        app:layout_constraintEnd_toStartOf="@+id/check_in_Button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/userImageView"
+        android:layout_width="123dp"
+        android:layout_height="129dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.921"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/no_photo" />
+
+    <ImageView
+        android:id="@+id/backgroundImageView"
+        android:layout_width="273dp"
+        android:layout_height="188dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginRight="116dp"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toTopOf="@+id/inTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/user_info_back" />
+
+    <ImageView
+        android:id="@+id/checkOutImageView"
+        android:layout_width="104dp"
+        android:layout_height="107dp"
+        android:elevation="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/check_out_Button"
+        app:layout_constraintEnd_toStartOf="@+id/check_out_Button"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toEndOf="@+id/check_out_Button"
+        app:layout_constraintTop_toBottomOf="@+id/outTextView"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/check_out_new_shape" />
+
+    <ImageView
+        android:id="@+id/checkInImageView"
+        android:layout_width="104dp"
+        android:layout_height="107dp"
+        android:elevation="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/check_in_Button"
+        app:layout_constraintEnd_toStartOf="@+id/check_in_Button"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toEndOf="@+id/check_in_Button"
+        app:layout_constraintTop_toBottomOf="@+id/inTextView"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/check_in_new_shape" />
+
+    <ImageView
+        android:id="@+id/viewListImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewAttenButton"
+        app:layout_constraintEnd_toStartOf="@+id/viewAttenButton"
+        app:layout_constraintHorizontal_bias="0.702"
+        app:layout_constraintStart_toEndOf="@+id/viewAttenButton"
+        app:layout_constraintTop_toBottomOf="@+id/viewAttenButton"
+        app:layout_constraintVertical_bias="0.498"
+        app:srcCompat="@drawable/calender" />
+
+    <TextView
+        android:id="@+id/view_atten_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:elevation="100dp"
+        android:enabled="true"
+        android:gravity="center"
+        android:text="@string/attendance_list"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:visibility="visible"
+        app:fontFamily="@font/font_1"
+        app:layout_constraintBottom_toTopOf="@+id/viewAttenButton"
+        app:layout_constraintEnd_toStartOf="@+id/viewAttenButton"
+        app:layout_constraintHorizontal_bias="0.406"
+        app:layout_constraintStart_toEndOf="@+id/viewAttenButton"
+        app:layout_constraintTop_toBottomOf="@+id/viewAttenButton"
+        app:layout_constraintVertical_bias="0.509" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="@string/n_id"
+        android:textColor="#FFFFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.646"
+        app:layout_constraintStart_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nationalID_textView"
+        android:layout_width="111dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.614"
+        app:layout_constraintStart_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/username"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.656"
+        app:layout_constraintStart_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/userNametextView"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="#FFFFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.702"
+        app:layout_constraintStart_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/inTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="100dp"
+        android:text="@string/check_in"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:fontFamily="@font/font_1"
+        app:layout_constraintBottom_toTopOf="@+id/check_in_Button"
+        app:layout_constraintEnd_toStartOf="@+id/check_in_Button"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toEndOf="@+id/check_in_Button"
+        app:layout_constraintTop_toBottomOf="@+id/check_in_Button"
+        app:layout_constraintVertical_bias="0.814" />
+
+    <TextView
+        android:id="@+id/outTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="100dp"
+        android:text="@string/check_out"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:fontFamily="@font/font_1"
+        app:layout_constraintBottom_toTopOf="@+id/check_out_Button"
+        app:layout_constraintEnd_toStartOf="@+id/check_out_Button"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toEndOf="@+id/check_out_Button"
+        app:layout_constraintTop_toBottomOf="@+id/check_out_Button"
+        app:layout_constraintVertical_bias="0.815" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:text="@string/email"
+        android:textColor="#FFFFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.735"
+        app:layout_constraintStart_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <ProgressBar
+        android:id="@+id/homeProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="270dp"
+        android:layout_height="210dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
