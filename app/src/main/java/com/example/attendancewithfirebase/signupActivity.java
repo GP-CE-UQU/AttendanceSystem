@@ -64,6 +64,7 @@ public class signupActivity extends AppCompatActivity {
     DatabaseReference databaseMac;
     DatabaseReference databaseN_ID;
     DatabaseReference database_FingerID;
+    DatabaseReference database_Taken_FingerID;
 
     Boolean idsReady=false;
     List<String> ids = new ArrayList<>();
@@ -160,10 +161,14 @@ public class signupActivity extends AppCompatActivity {
         }
     }
 
-
-
     }
 
+    public void uploadID_ToTaken(){
+        //
+
+        database_Taken_FingerID = FirebaseDatabase.getInstance().getReference("attendance//FingerprintIDs");
+        database_Taken_FingerID.child(fingerID).setValue(true);
+    }
 
     public void goToLogin(View view) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -178,12 +183,14 @@ public class signupActivity extends AppCompatActivity {
 
 
         // this method create user account with specific email and password
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            //Send the new fingerprint ID to the taken ids list
+                            uploadID_ToTaken();
 
                             // user account created successfully
                             showMessage("Account created");
