@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 //public class GetLocation extends AppCompatActivity implements LocationListener {
-public class GetLocation extends AppCompatActivity  {
+public class GetLocation extends AppCompatActivity  implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     Button continueToHomeButton;
     TextView locationText;
     TextView openText;
@@ -50,7 +56,7 @@ public class GetLocation extends AppCompatActivity  {
     String currentLat = "init";
     String currentLong = "init";
 
-    Boolean locationReady = false;
+    Boolean moved = false;
     String attendanceType;
 
 
@@ -62,10 +68,25 @@ public class GetLocation extends AppCompatActivity  {
 
     //DataDownloader task;
 
-    //Location
-    LocationManager locationManager;
+    //Location OLD
+    //LocationManager locationManager;
     LocationListener locationListener;
     Boolean firstConnection =true;
+
+    //Location NEW
+    private static final String TAG = "GetLocation";
+    //private TextView mLatitudeTextView;
+    //private TextView mLongitudeTextView;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLocation;
+    private LocationManager locationManager;
+
+    private LocationRequest mLocationRequest;
+    private com.google.android.gms.location.LocationListener listener;
+    private long UPDATE_INTERVAL = 2 * 1000;  /* 10 secs */
+    private long FASTEST_INTERVAL = 2000; /* 2 sec */
+
+    //private LocationManager locationManager;
 
 
     @Override
@@ -84,8 +105,18 @@ public class GetLocation extends AppCompatActivity  {
 
 
 
+        //Location NEW
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        //-----------------------------------------------------------------
+
         //Get the user location------------------------------------
-        locationListener = new LocationListener() {
+        /*locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("Location",location.toString());
@@ -107,7 +138,7 @@ public class GetLocation extends AppCompatActivity  {
             public void onProviderEnabled(String s) { }
             @Override
             public void onProviderDisabled(String s) { }
-        };
+        };*/
         //-------------------------------------------------------------------
 
         //Request Location in app permission---------------------------------
@@ -115,7 +146,7 @@ public class GetLocation extends AppCompatActivity  {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
         } else { // if permission is already granted
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+          //  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
         //-------------------------------------------------------------------
 
@@ -124,7 +155,26 @@ public class GetLocation extends AppCompatActivity  {
         Intent intent = getIntent();
         attendanceType = intent.getStringExtra("Attendance Type");
 
-        hideEverything();
+        //hideEverything();
+        setDelay(10000);
+    }
+
+    //Connect to Google Api Client
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    //Disconnect to Google Api Client
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override
@@ -153,6 +203,83 @@ public class GetLocation extends AppCompatActivity  {
     }
 
     //-------------------------------------------------------
+    //Location NEW
+    @Override
+    public void onConnected(Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+
+        startLocationUpdates();
+
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if(mLocation == null){
+            startLocationUpdates();
+        }
+        if (mLocation != null) {
+
+            currentLat = String.valueOf(mLocation.getLatitude());
+            currentLong = String.valueOf(mLocation.getLongitude());
+        } else {
+            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Connection Suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "Connection failed. Error: " + connectionResult.getErrorCode());
+    }
+
+
+    protected void startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL);
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                mLocationRequest, this);
+        Log.d("reque", "--->>>>");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+
+        Log.i("Lat:",String.valueOf(location.getLatitude()));
+        currentLat = String.valueOf(mLocation.getLatitude());
+
+        Log.i("Lat:",String.valueOf(location.getLongitude()) );
+        currentLong = String.valueOf(mLocation.getLongitude());
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.i("LatLng: ", latLng.toString());
+
+        if (compareLocations(currentLat,currentLong )) {
+
+            moveToNext();
+        }
+    }
+
+
+    //-------------------------------------------------------
 
     //This method is called when continue btn is pressed
     public void continueToNext(View view){
@@ -167,10 +294,15 @@ public class GetLocation extends AppCompatActivity  {
     }
 
     public void moveToNext(){
-        Intent mainIntent = new Intent(GetLocation.this, Check_Fingerprint.class);
-        mainIntent.putExtra("Attendance Type", attendanceType);
-        startActivity(mainIntent);
-        finish();
+        if(!moved) {
+
+            moved = true;
+            Intent mainIntent = new Intent(GetLocation.this, Check_Fingerprint.class);
+            mainIntent.putExtra("Attendance Type", attendanceType);
+            startActivity(mainIntent);
+            finish();
+
+        }
     }
 
     public void setDelay(int time){

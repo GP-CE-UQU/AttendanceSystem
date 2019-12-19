@@ -22,6 +22,19 @@ android {
 
 //True Time
 repositories {
+    //start here
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.google.android.gms') {
+                details.useVersion '12.0.1'
+            }
+            if (requested.group == 'com.google.firebase') {
+                details.useVersion '12.0.1'
+            }
+        }
+    }
+    //end
     maven {
         url "https://jitpack.io"
     }
@@ -63,6 +76,11 @@ dependencies {
     //True time
     //implementation 'com.github.instacart.truetime-android:library:2.0'
     implementation 'com.github.instacart.truetime-android:library-extension-rx:2.0'
+
+    //GoogleApiClient Location
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
 
 
 }

@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,11 +33,18 @@ public class CheckActivity extends AppCompatActivity {
 
     EditText nationalID_EditText;
     Button submitBtn;
+    Button cancelBtn;
+    ImageView lockImageView;
+    TextView typeTextView;
+
+
+
     Boolean timeReady = false;
     Boolean idReady = false;
     Boolean fingeridReady = false;
+    Boolean dateReady = false;
     String attendanceType;
-    String userFirebaseID="empty";
+    String userFirebaseNational_ID="empty";
     String userFirebaseFingerID="empty";
 
     DatabaseReference databaseAttendace;
@@ -42,7 +52,9 @@ public class CheckActivity extends AppCompatActivity {
 
     String currentTime;
 
-    SimpleDateFormat formater;
+    //SimpleDateFormat formater;
+    //String currentDate;
+    //raspberryPi
     String currentDate;
 
     //UserID
@@ -54,8 +66,10 @@ public class CheckActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check);
 
         submitBtn= findViewById(R.id.submitButton);
-
         nationalID_EditText = findViewById(R.id.id_verifyeEditText);
+        cancelBtn = findViewById(R.id.cancelButton);
+        lockImageView = findViewById(R.id.lockImageView);
+        typeTextView = findViewById(R.id.typeTextView);
 
         Intent intent = getIntent();
         attendanceType = intent.getStringExtra("Attendance Type");
@@ -72,11 +86,14 @@ public class CheckActivity extends AppCompatActivity {
 
         verifyID();
         getFirebaseTime();
+        //downloadData();
     }
+
+
 
     public void submitAttendance(View view){
 
-        if (userFirebaseID.matches( nationalID_EditText.getText().toString() ) && idReady && fingeridReady) {
+        if (userFirebaseNational_ID.matches( nationalID_EditText.getText().toString() ) && idReady && fingeridReady && dateReady) {
             //Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
 
             if (attendanceType.matches("in") && timeReady) {
@@ -165,7 +182,7 @@ public class CheckActivity extends AppCompatActivity {
         databaseIDs.child("nationalID").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userFirebaseID = dataSnapshot.getValue().toString();
+                userFirebaseNational_ID = dataSnapshot.getValue().toString();
                 idReady = true;
             }
             @Override
@@ -220,7 +237,6 @@ public class CheckActivity extends AppCompatActivity {
                 currentTime = (stringHour  +":"+  stringMinute  +":"+stringSecond );
                 timeReady=true;
                 Log.i("ftime Minute",currentTime);
-                submitBtn.setEnabled(true);
                 getDateOnly();
             }
 
@@ -270,9 +286,22 @@ public class CheckActivity extends AppCompatActivity {
 
     public void getDateOnly() {
         //---‐//Date Only------------------------------------------
-        Date date = new Date(); // this object contains the current date value
-        formater = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        currentDate = formater.format(date);
+        //Date date = new Date(); // this object contains the current date value
+        //formater = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        //currentDate2 = formater.format(date);
+
+        databaseAttendace.child("dateToday").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                currentDate = dataSnapshot.getValue().toString();
+                Log.i("date firebase",currentDate);
+                dateReady = true;
+                submitBtn.setEnabled(true);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
@@ -282,4 +311,5 @@ public class CheckActivity extends AppCompatActivity {
         finish();
         super.onBackPressed();
     }
+
 }

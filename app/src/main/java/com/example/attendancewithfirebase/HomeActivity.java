@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -67,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
     DatabaseReference databaseID;
     String userFirebaseNationalID;
     String userFirebaseFingerID = "empty";
-
+    DatabaseReference databaseAttendace;
     //UserID
     final String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -77,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Boolean macReady = false;
     Boolean checkReady = false;
+    Boolean dateReady = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -317,9 +319,23 @@ public class HomeActivity extends AppCompatActivity {
 
     public void getDateOnly() {
         //---‐//Date Only------------------------------------------
-        Date date = new Date(); // this object contains the current date value
+        /*Date date = new Date(); // this object contains the current date value
         formater = new SimpleDateFormat("yyyy-MM-dd");
-        currentDate = formater.format(date);
+        currentDate = formater.format(date);*/
+        databaseAttendace = FirebaseDatabase.getInstance().getReference("attendance");
+        databaseAttendace.child("dateToday").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                currentDate = dataSnapshot.getValue().toString();
+                //Log.i("date firebase",currentDate2);
+                dateReady = true;
+                //submitBtn.setEnabled(true);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //Menu------------------------------------------
@@ -360,7 +376,7 @@ public class HomeActivity extends AppCompatActivity {
                     checkIfUserCheckedIn();
                     getUserFirebaseMac();
 
-                    if(macReady && checkReady){
+                    if(macReady && checkReady && dateReady){
                         break;
                     }
                 }
