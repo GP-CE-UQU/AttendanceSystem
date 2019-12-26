@@ -51,10 +51,10 @@ public class GetLocation extends AppCompatActivity  implements GoogleApiClient.C
     ImageView locationImage;
 
     //UQU: lat:21.33062, long:39.94559
-    String Lat="init";
-    String Long="init";
-    String currentLat = "init";
-    String currentLong = "init";
+    String Lat="0.0";
+    String Long="0.0";
+    String currentLat = "0.0";
+    String currentLong = "0.0";
 
     Boolean moved = false;
     String attendanceType;
@@ -72,6 +72,9 @@ public class GetLocation extends AppCompatActivity  implements GoogleApiClient.C
     //LocationManager locationManager;
     LocationListener locationListener;
     Boolean firstConnection =true;
+
+    //Double distanceInMeters=0.0;
+    Float distanceInMeters;
 
     //Location NEW
     private static final String TAG = "GetLocation";
@@ -157,6 +160,7 @@ public class GetLocation extends AppCompatActivity  implements GoogleApiClient.C
 
         //hideEverything();
         setDelay(10000);
+        //Location.distanceBetween();
     }
 
     //Connect to Google Api Client
@@ -194,9 +198,19 @@ public class GetLocation extends AppCompatActivity  implements GoogleApiClient.C
 
     public Boolean compareLocations(String lat, String lon){
 
+
         if (latReady && longReady) {
-            if (Lat.regionMatches(0, lat, 0, 5) && Long.regionMatches(0, lon, 0, 5)) {
-                return true;
+
+            //distanceInMeters = meterDistanceBetweenPoints(Float.valueOf(Lat),Float.valueOf(Long),Float.valueOf(currentLat),Float.valueOf(currentLong));
+            //Log.i("Distance in meters (1):", distanceInMeters.toString());
+
+            distanceInMeters = getDistance( Double.parseDouble(Lat) , Double.parseDouble(Long), Double.parseDouble(lat), Double.parseDouble(lon) );
+            Log.i("Distance in meters (2):", distanceInMeters.toString());
+
+            if (distanceInMeters<120) {
+                if (Lat.regionMatches(0, lat, 0, 5) && Long.regionMatches(0, lon, 0, 5)) {
+                    return true;
+                }
             }
         }
             return false;
@@ -295,6 +309,7 @@ public class GetLocation extends AppCompatActivity  implements GoogleApiClient.C
 
     public void moveToNext(){
         if(!moved) {
+
 
             moved = true;
             Intent mainIntent = new Intent(GetLocation.this, Check_Fingerprint.class);
@@ -400,6 +415,40 @@ public class GetLocation extends AppCompatActivity  implements GoogleApiClient.C
         locationImage.setVisibility(View.VISIBLE);
 
         progress.setVisibility(View.GONE);
+    }
+
+    /*private double meterDistanceBetweenPoints(float lat_a, float lng_a, float lat_b, float lng_b) {
+        float pk = (float) (180.f/Math.PI);
+
+        float a1 = lat_a / pk;
+        float a2 = lng_a / pk;
+        float b1 = lat_b / pk;
+        float b2 = lng_b / pk;
+
+        double t1 = Math.cos(a1) * Math.cos(a2) * Math.cos(b1) * Math.cos(b2);
+        double t2 = Math.cos(a1) * Math.sin(a2) * Math.cos(b1) * Math.sin(b2);
+        double t3 = Math.sin(a1) * Math.sin(b1);
+        double tt = Math.acos(t1 + t2 + t3);
+
+        return 6366000 * tt;
+    }*/
+
+    //Get the distance in meters between two locations--------------------------
+
+    private float getDistance(Double lat1, Double lng1,Double lat2,Double lng2 ){
+        Location location1 = new Location("location 1");
+
+        location1.setLatitude(lat1);
+        location1.setLongitude(lng1);
+
+        Location locationB = new Location("location 2");
+
+        locationB.setLatitude(lat2);
+        locationB.setLongitude(lng2);
+
+        float distance = location1.distanceTo(locationB);
+
+        return distance;
     }
 }
 

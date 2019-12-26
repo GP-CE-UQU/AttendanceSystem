@@ -133,6 +133,7 @@ public class signupActivity extends AppCompatActivity {
         fingerID = fingerID_EditText.getText().toString();
 
 
+
         if (email.isEmpty() || name.isEmpty() || nID.isEmpty() || password.isEmpty() || fingerID.isEmpty() || pickedImgUri == null) {
             // something goes wrong : all fields must be filled
             // we need to display an error message
@@ -148,9 +149,14 @@ public class signupActivity extends AppCompatActivity {
 
 
             //check if fingerprint id is not taken
-            if (ids.contains(fingerID)) {
+            //and if finger is valid (ids avaliable from 1 to 127)
+            if ( ids.contains(fingerID) )  {
                 Toast.makeText(this, "Fingerprint ID is not valid", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else if (Integer.parseInt(fingerID) < 1 || Integer.parseInt(fingerID) > 127 ){
+                Toast.makeText(this, "Fingerprint ID is not valid", Toast.LENGTH_SHORT).show();
+            }
+                else {
                 signUpBtn.setVisibility(View.INVISIBLE);
                 loadingProgress.setVisibility(View.VISIBLE);
                 //if user picked image
